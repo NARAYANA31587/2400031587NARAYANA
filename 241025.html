@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>React Counter</title>
+  <style>
+    body {
+      font-family: system-ui, sans-serif;
+      display: flex;
+      min-height: 100vh;
+      align-items: center;
+      justify-content: center;
+      margin: 0;
+      background: #4670c6;
+    }
+    .card {
+      background: #cb1b1b;
+      padding: 28px;
+      border-radius: 12px;
+      box-shadow: 0 6px 24px rgba(220, 222, 225, 0.08);
+      text-align: center;
+      width: 320px;
+    }
+    h1 { margin: 0 0 12px 0; font-size: 20px; }
+    .count { font-size: 48px; margin: 12px 0; }
+    button {
+      padding: 8px 12px;
+      margin: 6px;
+      border-radius: 8px;
+      border: 1px solid #d4d7dc;
+      background: #f7f9fc;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    button:active { transform: translateY(1px); }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script type="text/babel">
+    const { createContext, useState, useContext } = React;
+    const CounterContext = createContext();
+    function CounterProvider({ children }) {
+      const [count, setCount] = useState(0);
+      return (
+        <CounterContext.Provider value={{ count, setCount }}>
+          {children}
+        </CounterContext.Provider>
+      );
+    }
+    function Counter() {
+      const { count, setCount } = useContext(CounterContext);
+      return (
+        <div className="card">
+          <h1>React Context Counter</h1>
+          <div className="count">{count}</div>
+          <div>
+            <button onClick={() => setCount(count + 10)}>Increment</button>
+            <button onClick={() => setCount(count - 10)}>Decrement</button>
+            <button onClick={() => setCount(0)}>Reset</button>
+          </div>
+        </div>
+      );
+    }
+    function App() {
+      return (
+        <CounterProvider>
+          <Counter />
+        </CounterProvider>
+      );
+    }
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<App />);
+  </script>
+</body>
+</html>
